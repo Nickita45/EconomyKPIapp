@@ -40,7 +40,7 @@ public class AndroidDB : MonoBehaviour
         dbconn.Open();
 
         string query;
-        query = "CREATE TABLE plan_tasks (id_user integer, task_name varchar(100),how_long integer default 1, data_start date,data_finish date, text_comment text);"+
+        query = "CREATE TABLE plan_tasks (id_user integer, task_name varchar(100),how_long integer default 1, date_start date,date_finish date, text_comment text,status integer default 0,how_long_finish integer default 1,date_finish_real date,text_comment_finish text);"+
         "CREATE TABLE job_duties (id_user integer, task_name varchar(100),priority integer default 1, text_comment varchar(230));"
         +"CREATE TABLE users (id_user INTEGER PRIMARY KEY   AUTOINCREMENT, login varchar(100), name varchar(100), secondname varchar(100), password varchar(200), email varchar(200),mycost INTEGER DEFAULT 10);";
         try
@@ -213,5 +213,96 @@ public class AndroidDB : MonoBehaviour
 
         }
         Debug.Log("Deleted");
+    }
+    public List<string> getListTasks()
+    {
+        List<string> list = new List<string>();
+        using (dbconn = new SqliteConnection(conn))
+        {
+            
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+            string sqlQuery = "SELECT task_name,how_long,date_start,date_finish,text_comment " + "FROM plan_tasks where id_user =" +id+" AND status=0";// table name
+            dbcmd.CommandText = sqlQuery;
+            try{
+            IDataReader reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|"+reader.GetString(3)+"|"+reader.GetString(4);
+                list.Add(str);
+            }
+            
+            reader.Close();
+            reader = null;
+            }
+            catch(Exception e)
+            {
+                Debug.Log(e);
+            }
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+        }
+        return list;
+    }
+    public void insertTask(string task_name,int count_hour,string date_start, string date_finish,string text_comment)
+    {
+        using (dbconn = new SqliteConnection(conn))
+        {
+        dbconn.Open(); //Open connection to the database.
+        dbcmd = dbconn.CreateCommand();
+        sqlQuery = string.Format("insert into plan_tasks (id_user,task_name,how_long,date_start,date_finish,text_comment) values (\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\")", id, task_name,count_hour,date_start,date_finish,text_comment);// table name
+        dbcmd.CommandText = sqlQuery;
+        dbcmd.ExecuteScalar();
+        dbconn.Close();
+        }
+
+        Debug.Log("Insert Done  ");
+    }
+    public void deleteTask(string task_name,int count,string text_comment)
+    {
+        using (dbconn = new SqliteConnection(conn))
+        {
+
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+            string sqlQuery = "DELETE FROM plan_tasks where id_user =" + id+" AND task_name = '" +task_name+"' AND how_long ="+count;// table name
+            print(sqlQuery);
+            dbcmd.CommandText = sqlQuery;
+            IDataReader reader = dbcmd.ExecuteReader();
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+            //data_staff.text = Delete_by_id + " Delete  Done ";
+
+        }
+        Debug.Log("Deleted");
+    }
+    public void updatePlanTask(string name, int how_long, int how_long_finish,string date_finish,string comment_finish)
+    {
+        using (dbconn = new SqliteConnection(conn))
+        {
+            dbconn.Open(); //Open connection to the database.
+            dbcmd = dbconn.CreateCommand();
+            sqlQuery = string.Format("UPDATE plan_tasks set status = 1 , how_long_finish = @how_long_finish,date_finish_real = @date_finish_real, text_comment_finish = @text_comment_finish where id_user = @id and task_name = @name and how_long = @how_long");
+
+            SqliteParameter P_update_name = new SqliteParameter("@how_long_finish", how_long_finish);
+            SqliteParameter P_update_secondname = new SqliteParameter("@date_finish_real", date_finish);
+            SqliteParameter P_update_email = new SqliteParameter("@text_comment_finish", comment_finish);
+            SqliteParameter P_update_login = new SqliteParameter("@id", id);
+            SqliteParameter P_update_cost = new SqliteParameter("@name", name);
+            SqliteParameter P_update_id = new SqliteParameter("@how_long", how_long);
+
+            dbcmd.Parameters.Add(P_update_name);
+            dbcmd.Parameters.Add(P_update_secondname);
+            dbcmd.Parameters.Add(P_update_email);
+            dbcmd.Parameters.Add(P_update_login);
+            dbcmd.Parameters.Add(P_update_cost);
+            dbcmd.Parameters.Add(P_update_id);
+
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteScalar();
+            dbconn.Close();
+        }
     }
 }

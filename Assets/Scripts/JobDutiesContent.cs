@@ -17,7 +17,7 @@ public class JobDutiesContent : MonoBehaviour
     public bool isChange = false;
     public void generateContent()
     {
-        deleteComponents(gameObject);
+        Utilities.deleteComponents(gameObject);
         GameObject mainobj;
         List<string> list = database.getListJobDutis();
         for(int i=0;i<list.Count;i++)
@@ -73,14 +73,6 @@ public class JobDutiesContent : MonoBehaviour
             panel_add.SetActive(true);
             text_button_create.text = "Отмена";
             isChange=true;
-        }
-    }
-    public void deleteComponents(GameObject gmj)
-    {
-        
-        for(int i=gmj.transform.childCount-1;i>=0;i--)
-        {
-            Destroy(gmj.transform.GetChild(i).gameObject);
         }
     }
 }
