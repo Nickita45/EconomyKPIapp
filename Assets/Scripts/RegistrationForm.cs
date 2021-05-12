@@ -14,6 +14,7 @@ public class RegistrationForm : MonoBehaviour
     private TMP_InputField confirmPassword;
     [SerializeField]
     private TMP_InputField firstName,secondName,email;
+    public GameObject registration, authorization;
 
     public AndroidDB database;
     public void onTryRegistr()
@@ -21,7 +22,8 @@ public class RegistrationForm : MonoBehaviour
         if (password.text == confirmPassword.text)
         {
             database.insertUser(login.text,firstName.text,secondName.text,email.text,password.text);
-
+            authorization.SetActive(true);
+            registration.SetActive(false);
             //PlayerPrefs.SetString("test","");//!!!!
         }
         else
