@@ -305,4 +305,35 @@ public class AndroidDB : MonoBehaviour
             dbconn.Close();
         }
     }
+    public List<string> getListCompletedTasks()
+    {
+        List<string> list = new List<string>();
+        using (dbconn = new SqliteConnection(conn))
+        {
+            
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+            string sqlQuery = "SELECT task_name,how_long_finish,date_start,date_finish_real,text_comment,how_long " + "FROM plan_tasks where id_user =" +id+" AND status=1";// table name
+            dbcmd.CommandText = sqlQuery;
+            try{
+            IDataReader reader = dbcmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|"+reader.GetString(3)+"|"+reader.GetString(4)+"|"+reader.GetInt32(5);
+                list.Add(str);
+            }
+            
+            reader.Close();
+            reader = null;
+            }
+            catch(Exception e)
+            {
+                Debug.Log(e);
+            }
+            dbcmd.Dispose();
+            dbcmd = null;
+            dbconn.Close();
+        }
+        return list;
+    }
 }
