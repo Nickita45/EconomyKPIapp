@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using Lean.Gui;
+using UnityEngine.UI;
 public class PlanTasksContent : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public class PlanTasksContent : MonoBehaviour
     string name_task;
     int count_task;
    // string finish_date;
+    public GameObject _modal_window_delete;
     public void generateContent()
     {
         Utilities.deleteComponents(gameObject);
@@ -32,10 +34,11 @@ public class PlanTasksContent : MonoBehaviour
             string[] str_split = list[i].Split('|');
             mainobj = Instantiate(prefab,transform);
             TextMeshProUGUI[] textmeshs = mainobj.GetComponentsInChildren<TextMeshProUGUI>();
-            for(int j=0;j<str_split.Length;j++)
+            for(int j=0;j<str_split.Length-1;j++)
                 textmeshs[j].text = str_split[j];
             /*if(str_split.Length !=5 )
                 textmeshs[4].text = "";*/
+            mainobj.name="Plantask"+str_split[5];
             GameObject gmj = mainobj.gameObject;
             mainobj.GetComponentsInChildren<LeanButton>()[0].OnClick.AddListener(() => removeTask(gmj));
             mainobj.GetComponentsInChildren<LeanButton>()[1].OnClick.AddListener(() => openFinishTaskPanel(gmj));
@@ -44,8 +47,20 @@ public class PlanTasksContent : MonoBehaviour
     }
     public void removeTask(GameObject gmj)
     {
+
+        _modal_window_delete.GetComponent<LeanWindow>().TurnOn();
+        _modal_window_delete.GetComponentsInChildren<Button>()[0].onClick.RemoveAllListeners();
+        _modal_window_delete.GetComponentsInChildren<Button>()[1].onClick.RemoveAllListeners();
         TextMeshProUGUI[] textmeshs = gmj.GetComponentsInChildren<TextMeshProUGUI>();
-        database.deleteTask(textmeshs[0].text,int.Parse(textmeshs[1].text),textmeshs[4].text);
+        int id = int.Parse(gmj.name.Replace("Plantask",""));
+        _modal_window_delete.GetComponentsInChildren<Button>()[0].onClick.AddListener(() => removeTaskSure(id));
+        _modal_window_delete.GetComponentsInChildren<Button>()[1].onClick.AddListener(_modal_window_delete.GetComponent<LeanWindow>().TurnOff);
+    
+    }
+    public void removeTaskSure(int id)
+    {
+        _modal_window_delete.GetComponent<LeanWindow>().TurnOff();
+        database.deleteTask(id);
         generateContent();
     }
     public void openFinishTaskPanel(GameObject gmj)

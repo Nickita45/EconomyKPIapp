@@ -40,8 +40,8 @@ public class AndroidDB : MonoBehaviour
         dbconn.Open();
 
         string query;
-        query = "CREATE TABLE plan_tasks (id_user integer, task_name varchar(100),how_long integer default 1, date_start date,date_finish date, text_comment text,status integer default 0,how_long_finish integer default 1,date_finish_real date,text_comment_finish text);"+
-        "CREATE TABLE job_duties (id_user integer, task_name varchar(100),priority integer default 1, text_comment varchar(230));"
+        query = "CREATE TABLE plan_tasks (id INTEGER PRIMARY KEY   AUTOINCREMENT,id_user integer, task_name varchar(100),how_long integer default 1, date_start date,date_finish date, text_comment text,status integer default 0,how_long_finish integer default 1,date_finish_real date,text_comment_finish text);"+
+        "CREATE TABLE job_duties (id INTEGER PRIMARY KEY   AUTOINCREMENT,id_user integer, task_name varchar(100),priority integer default 1, text_comment varchar(230));"
         +"CREATE TABLE users (id_user INTEGER PRIMARY KEY   AUTOINCREMENT, login varchar(100), name varchar(100), secondname varchar(100), password varchar(200), email varchar(200),mycost INTEGER DEFAULT 10);";
         try
         {
@@ -159,13 +159,13 @@ public class AndroidDB : MonoBehaviour
             
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
-            string sqlQuery = "SELECT task_name,priority,text_comment " + "FROM job_duties where id_user =" +id+"";// table name
+            string sqlQuery = "SELECT task_name,priority,text_comment,id " + "FROM job_duties where id_user =" +id+"";// table name
             dbcmd.CommandText = sqlQuery;
             try{
             IDataReader reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2);
+                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|" + reader.GetInt32(3).ToString();
                 list.Add(str);
             }
             
@@ -188,7 +188,7 @@ public class AndroidDB : MonoBehaviour
         {
         dbconn.Open(); //Open connection to the database.
         dbcmd = dbconn.CreateCommand();
-        sqlQuery = string.Format("insert into job_duties values (\"{0}\",\"{1}\",\"{2}\",\"{3}\")", id, task_name,priority,text_comment);// table name
+        sqlQuery = string.Format("insert into job_duties (id_user,task_name,priority,text_comment) values (\"{0}\",\"{1}\",\"{2}\",\"{3}\")", id, task_name,priority,text_comment);// table name
         dbcmd.CommandText = sqlQuery;
         dbcmd.ExecuteScalar();
         dbconn.Close();
@@ -196,14 +196,14 @@ public class AndroidDB : MonoBehaviour
 
         Debug.Log("Insert Done  ");
     }
-    public void deleteJobDuties(string task_name,int priority,string text_comment)
+    public void deleteJobDuties(int id)
     {
         using (dbconn = new SqliteConnection(conn))
         {
 
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
-            string sqlQuery = "DELETE FROM job_duties where id_user =" + id+" AND task_name ='" +task_name+"' AND priority ="+priority+" AND text_comment ='"+text_comment+"'";// table name
+            string sqlQuery = "DELETE FROM job_duties where id =" + id;// table name
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
             dbcmd.Dispose();
@@ -222,13 +222,13 @@ public class AndroidDB : MonoBehaviour
             
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
-            string sqlQuery = "SELECT task_name,how_long,date_start,date_finish,text_comment " + "FROM plan_tasks where id_user =" +id+" AND status=0";// table name
+            string sqlQuery = "SELECT task_name,how_long,date_start,date_finish,text_comment,id " + "FROM plan_tasks where id_user =" +id+" AND status=0";// table name
             dbcmd.CommandText = sqlQuery;
             try{
             IDataReader reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|"+reader.GetString(3)+"|"+reader.GetString(4);
+                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|"+reader.GetString(3)+"|"+reader.GetString(4)+"|" + reader.GetInt32(5).ToString();
                 list.Add(str);
             }
             
@@ -259,14 +259,14 @@ public class AndroidDB : MonoBehaviour
 
         Debug.Log("Insert Done  ");
     }
-    public void deleteTask(string task_name,int count,string text_comment)
+    public void deleteTask(int id)
     {
         using (dbconn = new SqliteConnection(conn))
         {
 
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
-            string sqlQuery = "DELETE FROM plan_tasks where id_user =" + id+" AND task_name = '" +task_name+"' AND how_long ="+count;// table name
+            string sqlQuery = "DELETE FROM plan_tasks where id =" + id;// table name
             print(sqlQuery);
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -313,13 +313,13 @@ public class AndroidDB : MonoBehaviour
             
             dbconn.Open(); //Open connection to the database.
             IDbCommand dbcmd = dbconn.CreateCommand();
-            string sqlQuery = "SELECT task_name,how_long_finish,date_start,date_finish_real,text_comment,how_long " + "FROM plan_tasks where id_user =" +id+" AND status=1";// table name
+            string sqlQuery = "SELECT task_name,how_long_finish,date_start,date_finish_real,text_comment,how_long,id " + "FROM plan_tasks where id_user =" +id+" AND status=1";// table name
             dbcmd.CommandText = sqlQuery;
             try{
             IDataReader reader = dbcmd.ExecuteReader();
             while (reader.Read())
             {
-                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|"+reader.GetString(3)+"|"+reader.GetString(4)+"|"+reader.GetInt32(5);
+                string str = reader.GetString(0)+"|" + reader.GetInt32(1).ToString()+"|"+reader.GetString(2)+"|"+reader.GetString(3)+"|"+reader.GetString(4)+"|"+reader.GetInt32(5)+"|" + reader.GetInt32(6).ToString();
                 list.Add(str);
             }
             

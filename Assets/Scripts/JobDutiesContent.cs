@@ -15,6 +15,7 @@ public class JobDutiesContent : MonoBehaviour
     public GameObject panel_add;
     public TextMeshProUGUI text_button_create;
     public bool isChange = false;
+    public GameObject _modal_window_delete;
     public void generateContent()
     {
         Utilities.deleteComponents(gameObject);
@@ -25,8 +26,9 @@ public class JobDutiesContent : MonoBehaviour
         string[] str_split = list[i].Split('|');
         mainobj = Instantiate(prefab,transform);
         TextMeshProUGUI[] textmeshs = mainobj.GetComponentsInChildren<TextMeshProUGUI>();
-        for(int j=0;j<str_split.Length;j++)
+        for(int j=0;j<str_split.Length-1;j++)
             textmeshs[j].text = str_split[j];
+        mainobj.name = "Job"+str_split[3];
         GameObject gmj = mainobj.gameObject;
         mainobj.GetComponentsInChildren<LeanButton>()[0].OnClick.AddListener(() => removeTask(gmj));
         }
@@ -34,8 +36,24 @@ public class JobDutiesContent : MonoBehaviour
     }
     public void removeTask(GameObject gmj)
     {
+        _modal_window_delete.GetComponent<LeanWindow>().TurnOn();
+        _modal_window_delete.GetComponentsInChildren<Button>()[0].onClick.RemoveAllListeners();
+        _modal_window_delete.GetComponentsInChildren<Button>()[1].onClick.RemoveAllListeners();
         TextMeshProUGUI[] textmeshs = gmj.GetComponentsInChildren<TextMeshProUGUI>();
-        database.deleteJobDuties(textmeshs[0].text,int.Parse(textmeshs[1].text),textmeshs[2].text);
+        int id = int.Parse(gmj.name.Replace("Job",""));
+        _modal_window_delete.GetComponentsInChildren<Button>()[0].onClick.AddListener(() => removeTaskSure(id));
+        _modal_window_delete.GetComponentsInChildren<Button>()[1].onClick.AddListener(_modal_window_delete.GetComponent<LeanWindow>().TurnOff);
+        
+        
+        //database.deleteJobDuties(id);
+        //generateContent();
+    }
+    public void removeTaskSure(int id)
+    {
+        /*TextMeshProUGUI[] textmeshs = gmj.GetComponentsInChildren<TextMeshProUGUI>();
+        int id = int.Parse(gmj.name.Replace("Job",""));*/
+        _modal_window_delete.GetComponent<LeanWindow>().TurnOff();
+        database.deleteJobDuties(id);
         generateContent();
     }
     public void addnewElement()
