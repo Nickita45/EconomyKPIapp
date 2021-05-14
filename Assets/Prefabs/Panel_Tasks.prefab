@@ -1734,6 +1734,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tap Button (LeanButton)
       objectReference: {fileID: 0}
+    - target: {fileID: 4314063419518461907, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
+        type: 3}
+      propertyPath: Data.Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314063419518461907, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
+        type: 3}
+      propertyPath: Data.Color.g
+      value: 0.42745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314063419518461907, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
+        type: 3}
+      propertyPath: Data.Color.b
+      value: 0.37254903
+      objectReference: {fileID: 0}
     - target: {fileID: 4314063419605019451, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
         type: 3}
       propertyPath: m_Color.r
@@ -1884,6 +1899,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tap Button (LeanButton) (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314063419518461907, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
+        type: 3}
+      propertyPath: Data.Color.r
+      value: 0.14117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314063419518461907, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
+        type: 3}
+      propertyPath: Data.Color.g
+      value: 0.9137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314063419518461907, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
+        type: 3}
+      propertyPath: Data.Color.b
+      value: 0.21176471
       objectReference: {fileID: 0}
     - target: {fileID: 4314063419605019451, guid: 743b9ff0d2a90f54197b0c0049c46fbc,
         type: 3}

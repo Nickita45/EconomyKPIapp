@@ -36,6 +36,11 @@ public class PlanTasksContent : MonoBehaviour
             TextMeshProUGUI[] textmeshs = mainobj.GetComponentsInChildren<TextMeshProUGUI>();
             for(int j=0;j<str_split.Length-1;j++)
                 textmeshs[j].text = str_split[j];
+            textmeshs[0].text = "Название:"+str_split[0];
+            textmeshs[1].text = "Планируемая длительность выполнения:" + str_split[1] + " часов";
+            textmeshs[2].text = "Дата начала:" + str_split[2];
+            textmeshs[3].text = "Дата завершения:" + str_split[3];
+            textmeshs[4].text = str_split[4];
             /*if(str_split.Length !=5 )
                 textmeshs[4].text = "";*/
             mainobj.name="Plantask"+str_split[5];
@@ -65,9 +70,9 @@ public class PlanTasksContent : MonoBehaviour
     }
     public void openFinishTaskPanel(GameObject gmj)
     {
-        _panel_finish_task.GetComponentsInChildren<TextMeshProUGUI>()[0].text="Вы точно хотите завершить '"+ gmj.GetComponentsInChildren<TextMeshProUGUI>()[0].text+"'?";
-        name_task = gmj.GetComponentsInChildren<TextMeshProUGUI>()[0].text;
-        count_task = int.Parse(gmj.GetComponentsInChildren<TextMeshProUGUI>()[1].text);
+        _panel_finish_task.GetComponentsInChildren<TextMeshProUGUI>()[0].text="Вы точно хотите завершить '"+ gmj.GetComponentsInChildren<TextMeshProUGUI>()[0].text.Replace("Название:","")+"'?";
+        name_task = gmj.GetComponentsInChildren<TextMeshProUGUI>()[0].text.Replace("Название:","");
+        count_task = int.Parse(gmj.GetComponentsInChildren<TextMeshProUGUI>()[1].text.Replace("Планируемая длительность выполнения:","").Replace(" часов",""));
         //finish_date = gmj.GetComponentsInChildren<TextMeshProUGUI>()[3].text;
         changePanelFinish();
 

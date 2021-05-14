@@ -28,6 +28,9 @@ public class JobDutiesContent : MonoBehaviour
         TextMeshProUGUI[] textmeshs = mainobj.GetComponentsInChildren<TextMeshProUGUI>();
         for(int j=0;j<str_split.Length-1;j++)
             textmeshs[j].text = str_split[j];
+        //textmeshs[0].text = "Название:"+str_split[0];
+        //textmeshs[1].text = "Критерий:"+str_split[1];
+        //textmeshs[2].text = "Комментарий:"+str_split[2];
         mainobj.name = "Job"+str_split[3];
         GameObject gmj = mainobj.gameObject;
         mainobj.GetComponentsInChildren<LeanButton>()[0].OnClick.AddListener(() => removeTask(gmj));

@@ -35,7 +35,7 @@ public class CompletedTasksContent : MonoBehaviour
                 textmeshs[5].color = Color.red;
             else
                 textmeshs[5].color = Color.yellow;
-            textmeshs[5].text = ""+koef;
+            textmeshs[5].text = string.Format("{0:0.00}", koef);
             sum_koef.Add(koef);
 
             GameObject gmj = mainobj.gameObject;
@@ -48,7 +48,7 @@ public class CompletedTasksContent : MonoBehaviour
             sum+=sum_koef[i];
         }
         float effectivy = sum/(float) sum_koef.Count;
-        _result.text = ""+effectivy;
+        _result.text = string.Format("{0:0.00}", effectivy);
         if(effectivy > 1)
         {
             _result.color = Color.green;
